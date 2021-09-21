@@ -20,7 +20,6 @@ if n < 1 :
 
 
 limit = 10000   # Weight limit: W
-items = []      # array of items
 values = []     # array of values in corresponding to items
 weights = []    # array of weights in corresponding to items 
 
@@ -38,10 +37,6 @@ def main() :
     print("Project #1")
     print("Python Version: %s\n\n" % (platform.python_version()))
 
-    # generate item list
-    for x in range(n):
-        items.append(x)
-
     # random assign values to array values
     values = numGen(1000)
     # random assign values to array weights
@@ -52,11 +47,20 @@ def main() :
         combi = [",".join(map(str, c)) for c in itertools.combinations(range(0, n), i+1)]
         #print(combi)
         for j in combi:
-            print(j)
+            #print(j)
+            curvalue = 0
+            curweight = 0
             dataset = j.split(",")
             for k in dataset:
-                print(k)
+                #print(values[int(k)])
+                curvalue += int(values[int(k)])
+                curweight += int(weights[int(k)])
+                #print(k)
             #print(j.split(","))
+            #print(curvalue)
+            #print(curweight)
+            if (curweight < limit):
+                print("Possible Solution: ", j, " Total Value: ", curvalue, " Total Weight: ", curweight)
 
     #print(n, items, values, weights)
 
