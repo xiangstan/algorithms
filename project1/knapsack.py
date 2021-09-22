@@ -1,5 +1,6 @@
 import itertools
 import matplotlib.pyplot as plt
+import numpy as np
 import platform
 import random
 import sys
@@ -39,40 +40,56 @@ def numGen(max) :
 
 data = ""
 
-# exhaustive research
-def exhaustive(n) :
+# exhaustive search
+def exhaustive(n, values, weights) :
     best = BestSet()
-    # random assign values to array values
-    values = numGen(1000)
-    # random assign values to array weights
-    weights = numGen(10000)
-    # print values and weights
-    print("Values: ", values)
-    print("Weights", weights, "\n")
-
     for i in range(n):
         combi = [",".join(map(str, c)) for c in itertools.combinations(range(0, n), i+1)]
-        #print(combi)
         for j in combi:
-            #print(j)
             curvalue = 0
             curweight = 0
             dataset = j.split(",")
             for k in dataset:
-                #print(values[int(k)])
                 curvalue += int(values[int(k)])
                 curweight += int(weights[int(k)])
-                #print(k)
-            #print(j.split(","))
-            #print(curvalue)
-            #print(curweight)
             if curweight < limit:
-                print("Possible Solution: ", j, " Total Value: ", curvalue, " Total Weight: ", curweight)
+                print("Possible Exhaustive Search Solution: ", j, " Total Value: ", curvalue, " Total Weight: ", curweight)
                 if curvalue > best.value:
                     best.value = curvalue
                     best.combo = j
     return best
 
+# greedy search
+def greedy(n, values, weights) :
+    sort = np.argsort(values)[::-1] # get the index by sorting values from highest to lowest
+
+    curvalue = 0
+    curweight = 0
+    dataset = []
+    valueset = []
+    weightset = []
+    print("Sorted dataset: ", sort)
+    for i in (sort):
+        valueset.append(values[i])
+        weightset.append(weights[i])
+
+        temp = curweight + weights[i]
+        if temp < limit :
+            curvalue += values[i]
+            curweight += weights[i]
+            dataset.append(i)
+    print("Sorted Values: ", valueset)
+    print("Sorted Weight: ", weightset)
+    print(dataset)
+    print(curvalue)
+    print(curweight)
+
+# plot graph
+def plotgraph(x, y, color):
+    lt.scatter(x, y, c = color)
+    plt.xlabel("n Times")
+    plt.ylabel("Time (sec)")
+    plt.show()
 
 def main() :
     x = []
@@ -85,22 +102,35 @@ def main() :
         #run same n five times
         for j in range(5):
             # print iteration number
-            print(f"Iteration {i+1}:")
+            print(f"\nIteration {i+1}:")
+            # random assign values to array values
+            values = numGen(1000)
+            # random assign values to array weights
+            weights = numGen(10000)
+            # print values and weights
+            print("Values: ", values)
+            print("Weights", weights)
+
             # start timer
             start = time.time()
             # calculate possible combinations with number n
-            best = exhaustive(n)
+            #best = exhaustive(n, values, weights)
+            # calculate possibility with greedy search
             # stop timer
             stop = time.time()
-            timer = stop - start
+            extimer = stop - start
+
+            # start timer
+            start = time.time()
+            greedy(n, values, weights)
+            # stop timer
+            stop = time.time()
+            grtimer = stop - start
             #print("\nBest Value: ", best.value, " Best Combo: ", best.combo)
-            #print(f"Run Time: {timer}.\n")
-            y.append(timer)
-            x.append(i)
-    plt.scatter(x, y, c ="blue")
-    plt.xlabel("n Times")
-    plt.ylabel("Time (sec)")
-    plt.show()
+            #print(f"Run Time: {extimer}.\n")
+            #y.append(extimer)
+            #x.append(i)
+    #plotgraph(x, y, "blue")
 
 if __name__ == "__main__":
     main()
