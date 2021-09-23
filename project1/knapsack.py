@@ -53,7 +53,7 @@ def exhaustive(n, values, weights) :
                 curvalue += int(values[int(k)])
                 curweight += int(weights[int(k)])
             if curweight < limit:
-                print("Possible Exhaustive Search Solution: ", j, " Total Value: ", curvalue, " Total Weight: ", curweight)
+                #print("Possible Exhaustive Search Solution: ", j, " Total Value: ", curvalue, " Total Weight: ", curweight)
                 if curvalue > best.value:
                     best.value = curvalue
                     best.combo = j
@@ -68,7 +68,7 @@ def greedy(n, values, weights) :
     dataset = []
     valueset = []
     weightset = []
-    print("Sorted dataset: ", sort)
+    #print("Sorted dataset: ", sort)
     for i in (sort):
         valueset.append(values[i])
         weightset.append(weights[i])
@@ -78,22 +78,19 @@ def greedy(n, values, weights) :
             curvalue += values[i]
             curweight += weights[i]
             dataset.append(i)
-    print("Sorted Values: ", valueset)
-    print("Sorted Weight: ", weightset)
-    print(dataset)
-    print(curvalue)
-    print(curweight)
-
-# plot graph
-def plotgraph(x, y, color):
-    lt.scatter(x, y, c = color)
-    plt.xlabel("n Times")
-    plt.ylabel("Time (sec)")
-    plt.show()
+    #print("Sorted Values: ", valueset)
+    #print("Sorted Weight: ", weightset)
+    #print(dataset)
+    #print(curvalue)
+    #print(curweight)
+    return dataset
 
 def main() :
     x = []
-    y = []
+    # timer records for exhaustive search 
+    ye = []
+    # timer records for greedy search
+    yg = []
     print("CS 5720 Design and Analysis of Algorithms")
     print("Project #1")
     print("Python Version: %s\n\n" % (platform.python_version()))
@@ -111,26 +108,38 @@ def main() :
             print("Values: ", values)
             print("Weights", weights)
 
+            # exhaustive search
             # start timer
-            start = time.time()
+            estart = time.time()
             # calculate possible combinations with number n
-            #best = exhaustive(n, values, weights)
+            best = exhaustive(n, values, weights)
             # calculate possibility with greedy search
             # stop timer
-            stop = time.time()
-            extimer = stop - start
+            estop = time.time()
+            extimer = estop - estart
 
+            # greedy search
             # start timer
-            start = time.time()
+            gstart = time.time()
             greedy(n, values, weights)
             # stop timer
-            stop = time.time()
-            grtimer = stop - start
+            gstop = time.time()
+            grtimer = gstop - gstart
+
+
             #print("\nBest Value: ", best.value, " Best Combo: ", best.combo)
             #print(f"Run Time: {extimer}.\n")
-            #y.append(extimer)
-            #x.append(i)
-    #plotgraph(x, y, "blue")
+            ye.append(extimer)
+            yg.append(grtimer)
+            x.append(i)
+
+    fig, (ax1, ax2) = plt.subplots(nrows = 2, ncols = 1)
+    fig.tight_layout()
+    ax1.scatter(x, ye)
+    ax1.set_title("Exhaustive Search")
+    ax2.scatter(x, yg)
+    ax2.set_title("Greedy Search")
+    plt.show()
 
 if __name__ == "__main__":
     main()
