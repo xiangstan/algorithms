@@ -6,11 +6,11 @@ import random
 import sys
 import time
 
-input = sys.argv
-
 if len(sys.argv) < 2 :
     print("\nUsage: python exhaustive.py [number of total items]\n")
     sys.exit()
+
+input = sys.argv
 
 try:
     n = int(input[1])
