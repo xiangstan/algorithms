@@ -20,9 +20,10 @@ def main() :
     length = len(str)
 
     for i in range(length) :
-        for j in range(i+1, length) :
-            if (str[i] == start) and (str[j] == end) :
-                total += 1
+        if str[i] == start :
+            for j in range(i+1, length) :
+                if (str[j] == end) :
+                    total += 1
 
     #print(str, start, end)
     print(f"\nString '{str}' contains total {total} substring(s) start with a '{start}' and end with a '{end}'.\n")

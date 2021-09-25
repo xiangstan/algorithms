@@ -152,3 +152,5 @@ cython_debug/
 # local unminify/text files
 test.*
 *.csv
+*.png
+*.txt

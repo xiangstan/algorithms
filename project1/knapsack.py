@@ -5,6 +5,7 @@ import platform
 import random
 import sys
 import time
+from matplotlib.gridspec import  GridSpec
 
 if len(sys.argv) < 2 :
     print("\nUsage: python exhaustive.py [number of total items]\n")
@@ -29,6 +30,7 @@ weights = []    # array of weights in corresponding to items
 class BestSet :
     def __init__(self):
         self.value = 0
+        self.weight = 0
         self.combo = ""
 
 # random generate an array of values
@@ -55,12 +57,14 @@ def exhaustive(n, values, weights) :
             if curweight < limit:
                 #print("Possible Exhaustive Search Solution: ", j, " Total Value: ", curvalue, " Total Weight: ", curweight)
                 if curvalue > best.value:
-                    best.value = curvalue
                     best.combo = j
+                    best.value = curvalue
+                    best.weight = curweight
     return best
 
 # greedy search
 def greedy(n, values, weights) :
+    best = BestSet()
     sort = np.argsort(values)[::-1] # get the index by sorting values from highest to lowest
 
     curvalue = 0
@@ -83,23 +87,43 @@ def greedy(n, values, weights) :
     #print(dataset)
     #print(curvalue)
     #print(curweight)
-    return dataset
+    best.combo = dataset
+    best.value = curvalue
+    best.weight = curweight
+    return best
+
+def deleteContent(fd):
+    os.ftruncate(fd, 0)
+    os.lseek(fd, 0, os.SEEK_SET)
 
 def main() :
     x = []
     # timer records for exhaustive search 
-    ye = []
+    yte = []
     # timer records for greedy search
-    yg = []
+    ytg = []
+    # value records for exhaustive search
+    yve = []
+    # value records for gready search
+    yvg = []
+    # weight records for exhaustive search
+    ywe = []
+    # weight records for gready search
+    ywg = []
+    # best value by exhaustive algo / greedy algo
+    ratio = []
+
     print("CS 5720 Design and Analysis of Algorithms")
     print("Project #1")
     print("Python Version: %s\n\n" % (platform.python_version()))
+
+    file = open("Input.txt", "w")
 
     for i in range(3, n+1):
         #run same n five times
         for j in range(5):
             # print iteration number
-            print(f"\nIteration {i+1}:")
+            print(f"\nIteration {i}:")
             # random assign values to array values
             values = numGen(1000)
             # random assign values to array weights
@@ -107,12 +131,15 @@ def main() :
             # print values and weights
             print("Values: ", values)
             print("Weights", weights)
+            file.write(f"Iteration {i}, dataset {j+1}:\n")
+            file.write(f"Values: {values}\n")
+            file.write(f"Weights: {weights}\n")
 
             # exhaustive search
             # start timer
             estart = time.time()
             # calculate possible combinations with number n
-            best = exhaustive(n, values, weights)
+            bestex = exhaustive(n, values, weights)
             # calculate possibility with greedy search
             # stop timer
             estop = time.time()
@@ -121,7 +148,7 @@ def main() :
             # greedy search
             # start timer
             gstart = time.time()
-            greedy(n, values, weights)
+            bestgr = greedy(n, values, weights)
             # stop timer
             gstop = time.time()
             grtimer = gstop - gstart
@@ -129,16 +156,44 @@ def main() :
 
             #print("\nBest Value: ", best.value, " Best Combo: ", best.combo)
             #print(f"Run Time: {extimer}.\n")
-            ye.append(extimer)
-            yg.append(grtimer)
+            yte.append(extimer)
+            yve.append(bestex.value)
+            ywe.append(bestex.weight)
+            ytg.append(grtimer)
+            yvg.append(bestgr.value)
+            ywg.append(bestgr.weight)
+            ratio.append(bestex.value / bestgr.value)
             x.append(i)
+        file.write("\n")
 
-    fig, (ax1, ax2) = plt.subplots(nrows = 2, ncols = 1)
-    fig.tight_layout()
-    ax1.scatter(x, ye)
-    ax1.set_title("Exhaustive Search")
-    ax2.scatter(x, yg)
-    ax2.set_title("Greedy Search")
+    file.close()
+
+    grid = plt.GridSpec(2, 2, left = 0.1, bottom = .15, right = .94, top = .94, wspace = .25, hspace = .25)
+    fig = plt.figure()
+    fig.clf()
+    fig.suptitle("Figures for Project 1\nExchaustive: blue, Greedy: green")
+
+    ax1 = fig.add_subplot(grid[0, 0])
+    ax1.scatter(x, yte, c = "blue")
+    ax1.scatter(x, ytg, c = "green")
+    ax1.set_title("Execute Timer")
+
+    ax2 = fig.add_subplot(grid[0, 1])
+    ax2.scatter(x, ywe, c = "blue")
+    ax2.scatter(x, ywg, c = "green")
+    ax2.set_title("Weight")
+
+    ax5 = fig.add_subplot(grid[1, :])
+    ax5.scatter(x, ratio)
+    ax5.set_title("Best Value by Exhaustive Algo / Greedy Algo")
+
+    plt.subplots_adjust(left = 0.1,
+                    bottom = 0.1, 
+                    right = 0.9, 
+                    top = 0.9, 
+                    wspace = 0.4, 
+                    hspace = 0.4)
+
     plt.show()
 
 if __name__ == "__main__":
