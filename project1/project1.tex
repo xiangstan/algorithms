@@ -1,0 +1,198 @@
+\documentclass[11pt]{article}  
+\usepackage[margin=1in]{geometry}
+\parindent=0in
+\parskip=8pt
+\usepackage{fancyhdr, amssymb, amsmath, graphicx, listings, float, subfig, enumerate, epstopdf, color, multirow, setspace, bm, textcomp, soul}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{hyperref}
+
+\pagestyle{fancy}
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  frame=single,
+  breaklines=true,
+  postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+}
+
+
+\begin{document} 
+
+\lhead{Project \# 1}
+\chead{Xiang S Tan}
+\rhead{\today}
+
+\begin{center}\begin{Large}
+CS 4720/5720 Design and Analysis of Algorithms
+
+Project \#1
+
+Student: Xiang S Tan
+\end{Large}
+\end{center}
+
+
+\section*{Answers to homework problems:}
+
+\begin{enumerate}
+	\item Problem Statement: Knapsack Problem
+		\begin{enumerate}[(a)]
+		\item A total of n total items $i \in \{1, 2, ... n\}$
+		\item Each item has its own value $i \in \{v_1, v_2, ... v_n\}$
+		\item Each item has its own weight $i \in \{w_1, w_2, ... w_n\}$
+		\item Create a bucket to pick a combination of items, which the total weight cannot exceed $W>0$
+		\end{enumerate}
+		
+	\item  \textbf{Deliverable 1}: Create an exhaustive search algorithm in psueodocode and determine its time complexity
+	 in term of $\Theta (.)$
+	\begin{enumerate}[(a)]
+		\item
+		\textbf{My Approach} \\\\
+		My first approach was to create an algorithm that loop through the entire item list
+		 $i \in \{1, 2, ... n\}$. Start with every single items and try added the next items into
+		 the bucket until the total weight in the bucket over the W. \\\\
+		However, one requirement, "\textbf{all possible subsets of items}", makes my approach
+		 difficult to implement.  
+			\begin{enumerate}[(i)]
+				\item
+				Suppose I put item 1 in the bucket.
+				\item
+				Then item 2. The total weight of item 1 and item 2 is below the weight limit.
+				\item
+				Adding item 3, and the total weight does not exceed the limit.
+				\item
+				Adding item 4, and the total weight exceeds the limit.
+				\item
+				Then I skip item 4 and move to item 5. Item 5 fit in without break the limit.
+				\item
+				Now the bucket has item 1, item 2, item 3, and item 5.
+				\item
+				At this point, I do not know if item 1, item 3, item 4 and item 5, or item 1, item
+				 3, item 4 and item 5 are over the weight limit.
+			\end{enumerate}
+		I could add another loop starting the second element against the first element in the
+		 parent loop. However, my approach cannot guarantee all possible combination. \\\\
+		Chatting with classmates, I have found a Python library called \textbf{itertools}. It
+		contains a function called \textbf{\textit{combinations}}. It generate all unique
+		combination of all elements within a given size of elements. \\\\
+		I can use this function to generate all possible subsets of items and check each subset 
+		 against the weight limit. \\\\
+
+		\item
+		\textbf{Pseudocode}
+
+		\lstset{caption={Pseudocode for Brute Force}}
+		\lstset{label={lst:code_direct}}
+		\lstset{basicstyle=\footnotesize}
+		\begin{lstlisting}[xleftmargin=\dimexpr-\leftmarginii-\leftmargini]
+bestvalue = 0
+bestweight = 0
+lists = Generate Unique Combination
+for i in lists :
+	sum = sum(i)
+	value = value of sum(i)
+	if sum < weightlimit :
+		bestvalue = value
+		bestweight = sum
+return {bestvalue, bestweight}
+		\end{lstlisting}
+
+		\item
+		\textbf{Analysis} \\\\
+		The order of growth of permutation is $n!$. a brute force of checking all subsets within 
+		 the return value of \textbf{\textit{itertools.combinations}} contains two loops, which are 
+		 \textbf{for i in lists} and \textbf{sum(i)}. The order of growth is $n^2$. \\\\
+		$n!+n^2$ gives us $n!$. \\\\
+		If we treat \textbf{\textit{itertools.combinations}} as a third-party function, and ignore
+		 its order of growth, the total order of growth is $n^2$. \\\\
+		Therefore, \hl{$T(n) \in \Theta (n!) \; or \; T(n) \in \Theta (n^2)$ without third-party  functions}. \\\\
+		I wanted to tried reduce the order of growth. However, due to the time constraint (due
+		 2021/09/26), I have to settle down with this approach. \\
+	\end{enumerate}
+	
+	\item
+	\textbf{Deliverable 2}: Create a greedy algorithm that always pick the highest value item first; and write 
+	 the pseudocode and determine the efficiency class in terms of $\Theta (.)$
+	\begin{enumerate}[(a)]
+		\item
+		\textbf{My Approach} \\\\
+		This is is fairly straight forward. I need to reorder the given item list from the highest
+		 value to least. Then reflect the index update with the weight list. \\\\
+		During the processing of checking the total weight. I know the left most element has the
+		 highest value; then add it in the bucket and check the total weight against the weight
+		 limit. \\\\
+		If adding the current item exceeds the weight limit, skip it and move to the next item
+		 until all items are added into the bucket or no more items can fit in the bucket without
+		 go over the limit. \\\\
+
+		\item
+		\textbf{Pseudocode}
+
+		\lstset{caption={Pseudocode for Brute Force}}
+		\lstset{label={lst:code_direct}}
+		\lstset{basicstyle=\footnotesize}
+		\begin{lstlisting}[xleftmargin=\dimexpr-\leftmarginii-\leftmargini]
+value = 0
+weight = 0
+lists = Sort the Given Item List
+for i in lists :
+	temp = weight + weightlist[i]
+	if temp < weightlimit :
+		value = value + valuelist[i]
+		weight = weight + weightlist[i]
+return {value, weight}
+		\end{lstlisting}
+
+		\item
+		\textbf{Analysis} \\\\
+		There are two parts of this approach. Sorting array has an order of growth of $n^2$;
+		 and adding weight of each item together is another $n$. \\\\
+		The order of growth of $n^2 + n$ is $n^2$, or treat sorting array function
+		 \textbf{\textit{np.argsort}} as a third-party function, $n$. \\\\
+		Therefore, \hl{$T(n) \in \Theta (n^2) \; or \; T(n) \in \Theta (n)$ without third-party functions}. \\\\
+	\end{enumerate}
+
+	\item
+	\textbf{Deliverable 3}: For the greedy algorithm: provide a proof of correctness or a counterexample with demonstrates
+	 its possible suboptimality. \\\\
+	We have talked about this in class. \\
+	Suppose that the total capacity is 10, and four items are given $\{v_1 = 42, w_1 = 7\}, \{v_2 = 12, w_2 = 3\}, \{v_3 = 40, w_3 = 4\}, and \; \{v_4 = 24, w_4 = 5\}$. \\\\
+	By the definition of the greedy algorithm, I first resort the item list by with value. \\\\
+	We have $\{v_1 = 42, w_1 = 7\}, \{v_3 = 40, w_3 = 4\}, \{v_4 = 24, w_4 = 5\}, and \; \{v_2 = 12, w_2 = 3\}$. \\\\
+	Then I put items in the bucket. From the most valuable items to least, I get item 1 and item 
+	 2 without exceeding the total capacity. The total value is:\\\\
+	 Total Value: $v_1+v_2=42+12=54$ and Total Weight: $w_1+w_2=7+3=10$. \\\\
+	Clearly I can see that putting item 3 and item 4 in the bucket will give me the total value: \\\\
+	Total Value: $v_3+v_4=40+24=64$ and Total Weight: $w_3+w_4=4+5=9$. \\\\
+	I can see that putting item 3 and item 4 into the buck is a better choice than item 1 and item 2. \\\\
+	Therefore, \hl{Greedy Algorithm is not a most optimal choice}.\\\\
+
+	\item
+	\textbf{Deliverable 4}: Implement both exhaustive and greedy algorithms in programming language of choice.
+	\begin{enumerate}[(a)]
+	\item W = 10000
+	\item n from 3 to 50
+	\item Generate 5 random inputs to each n.
+	\item Generate three scatter plots:
+		\begin{enumerate}[(i)]
+		\item The time (or number of steps) it takes for each of the two algorithms to terminate.
+		\item The total weight of items by each algorithm.
+		\item The total chosen by the exhaustive algorithm, \textit{divided} by the total value chosen by the greedy algorithm.
+		\end{enumerate}
+	\end{enumerate}
+	
+	\begin{figure}[h]
+	\includegraphics[width=\textwidth]{./figure_1.png}
+	\end{figure}
+	
+	I have tried to run $n>22$. However, it seemed that the program runs too long to complete. I have to drop it back to 22. \\\\
+	Top left figure illustrates the executed time of each algorithm. Blue color is the data from exhaustive search and green color is the greedy search. \\\\
+	My analysis showed that the exhaustive algorithm had an order of growth of $T(n) \in \Theta (n^2)$ without third-party functions. However, the plot did not show any growth in term of n vs time to execute the program.\\\\
+	However, I mentioned that the program took too long to run when $n>22$. The order of growth should not be as same as $\Theta (1)$. \\\\
+	Top right figure shows n vs the total weight. The total capacity is set to be 10,000. Therefore, no results are exceeding the limitation. There are two data points shows below 8000 and 5 points below 8500 of greedy algorithm, whereas exhaustive algorithm only has 1 point in each category.\\\\
+	From \textbf{Deliverable 3}, I understand that the greedy algorithm is not the most optimal choice.\\\
+	The bottom plot showed a similar result. Exhaustive algorithm gives a better result in term of picking the "best" value of each random item list.
+	 
+\end{enumerate}
+
+\end{document}

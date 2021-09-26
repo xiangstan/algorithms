@@ -154,3 +154,7 @@ test.*
 *.csv
 *.png
 *.txt
+*.synctex.gz
+pro*.out
+pro*.pdf
+proj*.aux
