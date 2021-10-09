@@ -26,23 +26,13 @@ def merge3(a, b, c) :
         elif smallest == c[0] :
             c.pop(0)
     
-    while a and b :
-        merge2(a, b, Array)
+    merge2(a, b, Array)
+    merge2(b, c, Array)
+    merge2(a, c, Array)
 
-    while b and c :
-        merge2(b, c, Array)
-
-    while a and c :
-        merge2(a, c, Array)
-
-    if a :
-        appendRest(a, Array)
-
-    elif b :
-        appendRest(b, Array)
-
-    else :
-        appendRest(c, Array)
+    appendRest(a, Array)
+    appendRest(b, Array)
+    appendRest(c, Array)
     
     return Array
 

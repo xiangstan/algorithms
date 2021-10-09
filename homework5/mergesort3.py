@@ -9,8 +9,8 @@ def mergesort(array) :
     length = len(array)
     #print("Array size:", length)
     if length > 2 :
-        size = len(array) // 3
-        return merge3(mergesort(array[0 : size]), mergesort(array[size : size*2]), mergesort(array[size*2 : len(array)]))
+        size = length // 3
+        return merge3(mergesort(array[0 : size]), mergesort(array[size : size*2]), mergesort(array[size*2 : length]))
     else :
         return array
 
