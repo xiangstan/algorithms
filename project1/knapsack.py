@@ -8,7 +8,7 @@ import time
 from matplotlib.gridspec import  GridSpec
 
 if len(sys.argv) < 2 :
-    print("\nUsage: python exhaustive.py [number of total items]\n")
+    print("\nUsage: python knapsack.py [number of total items]\n")
     sys.exit()
 
 input = sys.argv
