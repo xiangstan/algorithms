@@ -29,17 +29,19 @@ except ValueError:
     print("\nThe n value must be an integer\n")
     sys.exit()
 
+# k value cannot be negative or over 100
 if k < 1 or k > 100:
     print("\nPlease try to give k value between 1 and 100\n")
     sys.exit()
 
+# n value must be greater than or equal to k value
 if n < k :
     print("\nFor the purpose of this project, please provide a n value, which is greater than k\n")
     sys.exit()
 
-# max size of the random number
+# max size of the random numbers can be generated
 max = 100000
-# array the store all randomized arrays
+# array to store all randomized arrays
 d = []
 
 
@@ -51,6 +53,9 @@ def numGen(size) :
         temp.append(random.randint(1, max))
     return temp
 
+# hybrid sorting algorithm.
+# when n > k merge sort with 2 recursive call hybridsort function return as paramters
+# until n <= k, then insertion sort.
 def HybridSort(Array, k) :
     length = len(Array)
     if length > k :
@@ -60,8 +65,10 @@ def HybridSort(Array, k) :
         return InsertionSort(Array)
 
 def main() :
+    # declare x, y values for plot
     x = []
     y = []
+    # declare best time and best k value.
     bestT = -1
     bestK = 0
     file = open("Input.txt", "w")
@@ -74,8 +81,9 @@ def main() :
         file.write(f"{temp}\n\n")
         #print(temp)
         d.append(temp)
-    #print("Array:", d)
+
     file.close()
+
     # call HybridSort function
     for i in range (1, k + 1) :
         timeList = []
