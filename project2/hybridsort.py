@@ -1,7 +1,13 @@
-# Project 2 Hybrid Sorting Methods
-# This program is an implementation of the hybrid sorting algorithem
-#
-# Author: Xiang Shan Tan
+"""
+Project 2 Hybrid Sorting Methods
+This program is an implementation of the hybrid sorting algorithem
+
+Author: Xiang Shan Tan
+
+run:
+python ./hybridsort.py [k value] [n value]
+"""
+
 import matplotlib.pyplot as plt
 import random
 import statistics
@@ -83,13 +89,15 @@ def main() :
         d.append(temp)
 
     file.close()
+    print("All data saved to a file: input.txt")
 
     # call HybridSort function
     for i in range (1, k + 1) :
         timeList = []
-        for j in d :
+        for j in range(len(d)) :
+            print(f"HybridSort k = {i}, interation {j+1} and n = {len(d[j])}")
             start = time.perf_counter()
-            Array = HybridSort(j, i)
+            Array = HybridSort(d[j], i)
             end = time.perf_counter()
             timecount = end - start
             timeList.append(timecount)
@@ -97,7 +105,7 @@ def main() :
             x.append(i)
             y.append(timecount)
         timer = statistics.mean(timeList)
-        print(f"Hybrid Timer Median {timer} for k = {i} and n = {len(j)}")
+        print(f"Hybrid Timer Median {timer}")
         if bestT == -1 or timer < bestT :
             bestT = timer
             bestK = i
