@@ -10,7 +10,6 @@ python ./hybridsort.py [k value] [n value]
 
 import matplotlib.pyplot as plt
 import random
-import statistics
 import sys
 import time
 from insertionsort import InsertionSort
@@ -46,9 +45,11 @@ if n < k :
     sys.exit()
 
 # max size of the random numbers can be generated
-max = 100000
+max = 1000
 # array to store all randomized arrays
 d = []
+# preset all different sizes, each element is the percentage of the given array size n.
+size = [20, 40, 60, 80, 100]
 
 
 # random generate an array of values
@@ -71,12 +72,9 @@ def HybridSort(Array, k) :
         return InsertionSort(Array)
 
 def main() :
-    # declare x, y values for plot
-    x = []
-    y = []
-    # declare best time and best k value.
-    bestT = -1
-    bestK = 0
+    # declare array of best times
+    BestKs = []
+    # open file input.txt
     file = open("Input.txt", "w")
     ## test arrays
     print("The system will generate 6 different sets of arrays!!")
@@ -91,29 +89,49 @@ def main() :
     file.close()
     print("All data saved to a file: input.txt")
 
+    fig, (ax1, ax2) = plt.subplots(2, 1)
+
     # call HybridSort function
-    for i in range (1, k + 1) :
-        timeList = []
-        for j in range(len(d)) :
-            print(f"HybridSort k = {i}, interation {j+1} and n = {len(d[j])}")
-            start = time.perf_counter()
-            Array = HybridSort(d[j], i)
-            end = time.perf_counter()
-            timecount = end - start
-            timeList.append(timecount)
-            #print(Array)
+    for s in size :
+        # declare x, y values for plot
+        x = []
+        y = []
+        # declare best time and best k value.
+        bestT = -1
+        bestK = 0
+        # calculate partial size of array.
+        partial = int(n * s / 100)
+        print(f"Array size: {partial}")
+        for i in range (1, k + 1) :
+            timeSum = 0
+            for j in range(len(d)) :
+                #print(f"HybridSort k = {i}, interation {j+1} and n = {len(d[j])}")
+                start = time.perf_counter()
+                Array = HybridSort(d[j][0 : partial], i)
+                end = time.perf_counter()
+                timecount = end - start
+                timeSum = timeSum + timecount
+                #print(Array)
+            timer = timeSum / len(d)
             x.append(i)
-            y.append(timecount)
-        timer = statistics.mean(timeList)
-        print(f"Hybrid Timer Median {timer}")
-        if bestT == -1 or timer < bestT :
-            bestT = timer
-            bestK = i
-    
-    print("Best Record: ", bestT, bestK)
-    plt.scatter(x, y)
-    plt.ylabel("Timer (second)")
-    plt.xlabel(f"K Value with Array Size: {n}")
+            y.append(timer)
+            print(f"K: {i}, Hybrid Timer Average: {timer}")
+            if bestT == -1 or timer < bestT :
+                bestT = timer
+                bestK = i
+            print("Best Record: ", bestT, bestK)
+        BestKs.append(bestK)
+        ax1.plot(x, y, label=f"n = {partial}")
+    ax1.set_ylabel("Timer (second)")
+    ax1.set_xlabel(f"K Value with 5 different Array Sizes")
+    ax1.set_title("Average Run Time")
+    ax1.legend()
+
+    ax2.scatter([int(s * n /100) for s in size], BestKs)
+    ax2.set_xlabel("Size of n")
+    ax2.set_ylabel(f"K Value with the Shortest Time")
+    ax2.set_title("Optimal K Value of Array Length n")
+
     plt.tight_layout()
     plt.show()
 
