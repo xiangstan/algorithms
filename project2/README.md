@@ -10,3 +10,13 @@ Create a new sorting algorithmHybridSort(A[n],K)that takes two inputs:
 1. Ifn≤K, your algorithm should sortit using Insertion Sort.  Ifn > K, your algorithm should sort it using Mergesort.
 
 Since it is a sorting algorithm your algorithm should return or compute a new array that containsexactly the same elements as the input array and is sorted ascending.  Your algorithm may operatein-place or return a new sorted array; the choice is yours.The  high-level  operation  of  your  algorithm  should  work  as  follows,  given  correctly-implementedsubroutinesInsertionSort(A[n])andMerge(B[p],C[q]):
+
+## Files
+
+| Filename | Description |
+|--- |--- |
+| [hybridsort.py](hybridsort.py) | The hybrid sorting algorithm. |
+| [insertionsort.py](insertionsort.py) | The insertion sort algorithm. |
+| [mergesort2.py](mergesort2.py) | This merge sort algorithm. It splits the given array to two subarrays each recursive call. |
+| [sortedhybrid.py](sortedhybrid.py) | This is the hybrid sorting algorithm with only sorted array as input data. |
+| [validate.py](validate.py) | This program validated hybrid sorting alogirthm gives same results as Python built-in sorting function. |

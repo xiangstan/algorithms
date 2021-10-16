@@ -23,21 +23,27 @@ def HybridSort(Array) :
 def main() :
     max = 1000
     i = 10
+    # open a file to store output
+    file = open("validation.txt", "w")
     while i <= 100 :
-        print(f"New Iteration: array size {i}\n")
+        file.write(f"New Iteration: array size {i}\n")
         a = []
         for j in range(i) :
             a.append(random.randint(1, max))
-        print("Array:\n", a)
+        file.write(f"Array:\n {a}\n")
         hybrid = HybridSort(a)
         a.sort()
-        print("hybrid:\n", hybrid)
-        print("builtin:\n", a)
+        file.write(f"Hybrid:\n {hybrid}\n")
+        file.write(f"Built-in Sort:\n {a}\n")
         if hybrid == a :
-            print("Hybrid sorting provides the same result as Python the built-in sorting function\n")
+            print("Hybrid sorting provides the same result as Python the built-in sorting function")
+            file.write("Hybrid sorting provides the same result as Python the built-in sorting function\n")
         else :
-            print("Hybrid sorting gives different result than the Python Built-in sorting function\n")
+            print("Hybrid sorting gives different result than the Python Built-in sorting function")
+            file.write("Hybrid sorting gives different result than the Python Built-in sorting function\n")
         i = i + 10
+        file.write("\n\n")
+    file.close()
 
 if __name__ == "__main__":
     main()
