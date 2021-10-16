@@ -1,5 +1,5 @@
 """
-Project 2 Hybrid Sorting Methods
+Project 2 Hybrid Sorting Algorithm
 This program is an implementation of the hybrid sorting algorithem
 
 Author: Xiang Shan Tan
@@ -77,9 +77,9 @@ def main() :
     # open file input.txt
     file = open("Input.txt", "w")
     ## test arrays
-    print("The system will generate 6 different sets of arrays!!")
-    # generate 6 different array sets
-    for i in range (6) :
+    print("The system will generate 5 different sets of arrays!!")
+    # generate 5 different array sets
+    for i in range (5) :
         temp = numGen(n)
         file.write(f"Iteration {i+1}:\n")
         file.write(f"{temp}\n\n")

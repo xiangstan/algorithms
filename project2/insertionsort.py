@@ -1,7 +1,12 @@
-# Project 2 Hybrid Sorting Methods
-# This program is an implementation of insertion sort
-# 
-# Author: Xiang Shan Tan
+"""
+Project 2 Hybrid Sorting MAlgorithm
+This program is an implementation of insertion sort
+
+Author: Xiang Shan Tan
+
+run:
+python ./insertionsort.py
+"""
 
 def InsertionSort(Array) :
     # loop through entire array. i is the index position and val is the value of Array[i]
