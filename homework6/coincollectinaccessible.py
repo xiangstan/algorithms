@@ -18,11 +18,17 @@ f = [
 # result of test array supposed to get
 
 # check if the selected cell is inaccessible.
-# return -1 if it is
+# paramters:
+#   check: the value of top/left cell of the selected cell
+#   add: the pre-defined value of selected cell in Array
+# return -1 if either check or add has a value of -1
 # otherwise return the cell value + the add value
 def CheckInacc(check, add) :
-    if check == -1 :
-        return -1
+    if add < 0 or check < 0 :
+        if add > 0 :
+            return -1
+        else :
+            return -9
     else :
         return check + add
 
@@ -31,53 +37,43 @@ def CoinCollection(Array) :
     rowsize = len(f)
     colsize = len(f[0])
 
-    #print(Array[rowsize - 2][colsize - 1], Array[rowsize - 1][colsize - 2])
-    # check if the last cell is block by both upper and left inaccessible cells.
-    if Array[rowsize - 2][colsize - 1] == -1 and Array[rowsize - 1][colsize - 2] == -1 :
-        return 0 if Array[rowsize - 1][colsize - 1] <= 0 else Array[rowsize - 1][colsize - 1]
+    # initialize the value of [0, 0] point.
+    f[0][0] = Array[0][0]
 
-    else :
-        # initialize the value of [0, 0] point.
-        f[0][0] = Array[0][0]
+    # fill first row
+    for i in range(colsize) :
+        f[0][i] = CheckInacc(f[0][i - 1], Array[0][i])
+    # print the first row of collected coins
+    print(f[0])
+    
+    for i in range(1, rowsize) :
+        #print(Array[i][0])
+        f[i][0] = CheckInacc(f[i - 1][0], Array[i][0])
+        #print(f[i])
+        for j in range(1, colsize) :
+            #print(f"Array[{i}][{j}]: {Array[i][j]}")
+            f[i][j] = CheckInacc(max(f[i - 1][j], f[i][j - 1]), Array[i][j])
+        # print the current row of collected coins
+        print(f[i])
 
-        # fill first row
-        for i in range(colsize) :
-            f[0][i] = CheckInacc(f[0][i - 1], Array[0][i])
-        # print the first row of collected coins
-        print(f[0])
-        
-        for i in range(1, rowsize) :
-            #print(Array[i][0])
-            if Array[i][0] != -1 :
-                f[i][0] = CheckInacc(f[i - 1][0], Array[i][0])
-            else :
-                f[i][0] = -1
-            #print(f[i])
-            for j in range(1, colsize) :
-                #print(f"Array[{i}][{j}]: {Array[i][j]}")
-                # check if Array[i][j] is inaccessible
-                if Array[i][j] == -1 :
-                    f[i][j] = -1
-                else :
-                    #print(max(f[i - 1][j], f[i][j - 1]))
-                    f[i][j] = max(f[i - 1][j], f[i][j - 1]) + Array[i][j]
-            # print the current row of collected coins
-            print(f[i])
-
-        return f[rowsize - 1][colsize - 1]
+    return f[rowsize - 1][colsize - 1]
 
 def main() :
     ## Sample Test Arrays
     c = [
-        [0, -1, 0, 1, 0, 0],
-        [0, 0, 0, 0, 1, -1],
-        [-1, 0, -1, 1, 0, 1],
-        [0, 1, 0, 0, -1, 0],
-        [1, 0, 0, 0, -1, 0],
+        [0, -9, 0, 1, 0, 0],
+        [0, 0, 0, 0, 1, -9],
+        [-9, 0, -9, 1, 0, 1],
+        [0, 1, 0, 0, -9, 0],
+        [1, 0, 0, 0, -9, 0],
     ]
     collected = CoinCollection(c)
-    print("Total coin collected: ", collected)
+    if (collected < 0) :
+        result = "End cell block inaccessible"
+    else :
+        result = str(collected)
+    print("\n-9 represents inaccessible cell; -1 represents inaccessible cell with a coin in it.")
+    print(f"Total coin collected: {result}.\n")
 
 if __name__ == "__main__":
     main()
-
