@@ -1,4 +1,14 @@
-def Knapsack(capacity, values, weights) :
+"""
+Project 3: Dynamic Programming Knapsack Problem
+This program is the implementation of Bottom Up aproach of Knapsack problem.
+
+Author: Xiang Shan Tan
+
+run:
+python ./buknapsack.py
+"""
+
+def BUKnapsack(capacity, values, weights) :
     # create a multidimensional array to store total count of carried items
     v = len(values)
     w = len(weights)
@@ -19,7 +29,7 @@ def Knapsack(capacity, values, weights) :
 def main() :
     values = [42, 12, 40, 25]
     weights = [7, 3, 4, 5]
-    print(f"\nMaximum weight can be carried: {Knapsack(10, values, weights)}\n")
+    print(f"\nMaximum weight can be carried: {BUKnapsack(10, values, weights)}\n")
 
 if __name__ == "__main__":
     main()
