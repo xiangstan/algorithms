@@ -33,9 +33,13 @@ def main() :
     wxm = []
     y1 = []
     y2 = []
+    compIdx = []
+    compTyp = ""
+    growth = [0]
+    sumRates = 0
     values = numGen(maxValue, items)
     print("Number of items vs Time")
-    for i in range(100, 1001, 5) :
+    for i in range(100, 1001, 1) :
         timerB = 0
         timerM = 0
         Count = [[-1 for x in range(i + 1)] for x in range(i + 1)]
@@ -58,6 +62,19 @@ def main() :
 
         avgB = timerB / avg
         avgM = timerM / avg
+        if avgB > avgM and compTyp != "B" :
+            compTyp = "B"
+            compIdx.append(i)
+        if avgM > avgB and compTyp != "M" :
+            compTyp = "M"
+            compIdx.append(i)
+
+        sumRates = sumRates + avgB
+        if i % 10 == 0 :
+            avgR = sumRates / 10
+            growth.append(avgR)
+            sumRates = 0
+
 
         print(f"Bottom-up result is {result}, execution time is {avgB}")
         print(f"Memoization result is {result}, execution time is {avgM} \n")
@@ -80,7 +97,7 @@ def main() :
             # random generate weights array, if programming specific weight, the maximum value of randomly generate value 
             # is the specific weight.
             # otherwise default 100
-            weights = numGen(i if maxWeight == 100 else maxWeight, items)
+            weights = numGen(i if maxWeight == 101 else maxWeight, items)
             # Bottom Up
             CountB = [[0 for x in range(500 + 1)] for x in range(500 + 1)]
             start = time.perf_counter()
@@ -105,10 +122,13 @@ def main() :
         wxb.append(avgB)
         wxm.append(avgM)
         y2.append(i)
+    
+    print(compIdx)
+    print("Rates: ", growth)
     ax2.scatter(y2, wxb, label="Bottom Up", color="red")
     ax2.scatter(y2, wxm, label="Top Down/Memoization", color="black")
     ax2.set_ylabel("Timer (second)")
-    ax2.set_xlabel(f"Size of Capacity: Maximum {maxWeight}")
+    ax2.set_xlabel(f"Size of Capacity: Maximum {maxWeight - 1}")
     ax2.set_title("Capacity vs Execution Time")
     ax2.legend()
     plt.tight_layout()
