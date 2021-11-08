@@ -36,7 +36,9 @@ def main() :
     compIdx = []
     compTyp = ""
     growth = [0]
-    sumRates = 0
+    sumRatesB = 0
+    sumRatesM = 0
+    rate = []
     values = numGen(maxValue, items)
     print("Number of items vs Time")
     for i in range(100, 1001, 1) :
@@ -69,11 +71,15 @@ def main() :
             compTyp = "M"
             compIdx.append(i)
 
-        sumRates = sumRates + avgB
+        sumRatesB = sumRatesB + avgB
+        sumRatesM = sumRatesM + avgM
         if i % 10 == 0 :
-            avgR = sumRates / 10
-            growth.append(avgR)
-            sumRates = 0
+            avgrB = sumRatesB / 10
+            avgrM = sumRatesM / 10
+            growth.append(avgrB)
+            rate.append(avgrM)
+            sumRatesB = 0
+            sumRatesM = 0
 
 
         print(f"Bottom-up result is {result}, execution time is {avgB}")
@@ -89,6 +95,7 @@ def main() :
     ax1.set_title("Items vs Execution Time")
     ax1.legend()
     print("Weights vs Time")
+    sumRates = 0
     for i in range(1, maxWeight) :
         weightB = 0
         weightM = 0
@@ -124,7 +131,8 @@ def main() :
         y2.append(i)
     
     print(compIdx)
-    print("Rates: ", growth)
+    print("Growth Rates Bottom-Up: ", rate)
+    print("Growth Rates Top-Down: ", growth)
     ax2.scatter(y2, wxb, label="Bottom Up", color="red")
     ax2.scatter(y2, wxm, label="Top Down/Memoization", color="black")
     ax2.set_ylabel("Timer (second)")

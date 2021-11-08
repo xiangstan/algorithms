@@ -18,9 +18,15 @@ Plots showing the time performance of your algorithm as a function of n and W fo
 
 Plots showing the time performance of your algorithm as a function of n and W for each algorithm on special inputs, and discussion about the reasons for any performance differences between the two algorithms.
 
+#### Deliverable 4
+
+ Illustrate that this is a pseudopolynomial-time algorithm.
+
 ## Files
 
 | Filename | Description |
 |--- |--- |
-| [buknapsack.py](buknapsack.py) | The bottom up Knapsak Algorithm. |
-| [mfknapsack.py](mfknapsack.py) | The top down, aka Memoization Algorithm. |
+| [buknapsack.py](buknapsack.py) | The Bottom Up Knapsask Algorithm. |
+| [mfknapsack.py](mfknapsack.py) | The Top Down, aka Memoization Knapsack Algorithm. |
+| [compare.py](compare.py) | Main program that compares both Knapsack algorithms. |
+| [pseudopolynomial.py](pseudopolynomial.py) | The Bottom Up Knapsack Algorithm that generates a plot of pseudopolynomial-time. |
