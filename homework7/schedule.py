@@ -18,7 +18,6 @@ def EarlistStartFirst (start, end) :
     jobs = []
     # sort end array order by started time
     queue = np.argsort(start)
-    print("EarlistStartFirst: ", queue)
     timer = 0
     for i in queue :
         if start[i] >= timer :
@@ -65,7 +64,6 @@ def EarlistFinishFirst (start, end) :
     jobs = []
     # sort end array order by finished time
     queue = np.argsort(end)
-    print("EarlistFinishFirst: ", queue)
     timer = 0
     for i in queue :
         if start[i] >= timer :
@@ -76,12 +74,17 @@ def EarlistFinishFirst (start, end) :
 def main() :
     start = [1, 2, 4]
     end = [3, 5, 5]
+    print("Earlist Started First:")
     jobs, completed_timer = EarlistStartFirst(start, end)
-    print(f"Earlist Started First: \nJob Queue: {jobs}, completed timer: {completed_timer}\n")
+    print(f"Job Queue: {jobs}, completed time: {completed_timer}\n")
+
+    print("Shortest Duration First:")
     jobs, completed_timer = ShortestDurFirst(start, end)
-    print(f"Shortest Duration First: \nJob Queue: {jobs}, completed timer: {completed_timer}\n")
+    print(f"Job Queue: {jobs}, completed time: {completed_timer}\n")
+
+    print("Earlist Finished First:")
     jobs, completed_timer = EarlistFinishFirst(start, end)
-    print(f"Earlist Finished First: \nJob Queue: {jobs}, completed timer: {completed_timer}\n")
+    print(f"Job Queue: {jobs}, completed time: {completed_timer}\n")
 
 if __name__ == "__main__":
     main()
