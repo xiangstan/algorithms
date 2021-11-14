@@ -41,16 +41,18 @@ def ShortestDurFirst (start, end) :
     # record its start and end time for comparison later
     begin = start[sorts[0]]
     last = end[sorts[0]]
+    # remove the first element from the array queue
+    queue = queue[1:]
     # set the timer to the first job's end time
     timer = last
     # loop through the entire queue
     for i in queue :
         # if the end time of the selected job is earlier than the earliest saved jobs
-        if end[i] < begin :
+        if end[i] <= begin :
             sorts.append(i)
             begin = start[i]
         # if the start time of the selected job is later than the latest saved jobs
-        elif start[i] > last :
+        elif start[i] >= last :
             sorts.append(i)
             last = end[i]
             timer = end[i]
