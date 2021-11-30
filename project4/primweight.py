@@ -12,8 +12,6 @@ from importcsv import ImportCsv
 from count import CountNodes
 from pathlib import Path
 
-letters = ["A", "B", "C", "D", "E", "F"]
-
 # e edges and v vertices
 def PrimWeight(graph) :
     # initial empty minimum spanning tree array

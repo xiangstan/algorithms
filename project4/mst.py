@@ -60,14 +60,15 @@ def main() :
             # save weight value into disctoary "totalweight"
             totalweight["weightmatrix"]["type" + str(i + 1)].append(weight)
             if j == 0 :
-                print("{:<25} {:<10} {:<10}".format("File", "Nodes", "Edges"))
-                print("{:<25} {:<10} {:<10}".format("---------------", "-----", "-----"))
-            print("{:<25} {:<10} {:<10}".format(f"t{str(i + 1)}_graph_{str(j)}.csv", nodes, edges))
+                print("{:<25} {:<10} {:<10} {:<10}".format("File", "Nodes", "Edges", "Weight"))
+                print("{:<25} {:<10} {:<10} {:<10}".format("---------------", "-----", "-----", "-----"))
+            print("{:<25} {:<10} {:<10} {:<10}".format(f"t{str(i + 1)}_graph_{str(j)}.csv", nodes, edges, weight))
             if i == 0 :
                 x.append(nodes)
         print("\n")
 
     print(f"{totalweight}\n")
+    print(f"{timer}\n")
     ax1.scatter(counts["node"]["type1"], counts["edge"]["type1"], label="Type 1", color="red")
     ax1.scatter(counts["node"]["type2"], counts["edge"]["type2"], label="Type 2", color="black")
     ax1.set_ylabel("Total Edges")
