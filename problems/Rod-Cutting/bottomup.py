@@ -18,11 +18,12 @@ def BottomUp(c, n):
   r = [0] * (n + 1)
   r[0] = 0
 
-  for j in range(1, n + 1):
+  for i in range(1, n + 1):
     maximum_revenue = -1 * INITIAL
-    for i in range(1, j + 1):
-      maximum_revenue = max(maximum_revenue, c[i] + r[j - i])
-    r[j] = maximum_revenue
+    for j in range(1, i + 1):
+      maximum_revenue = max(maximum_revenue, c[j] + r[i - j])
+    r[i] = maximum_revenue
+    print(f"Length {i}: maximum price is {r[i]}.")
   return r[n]
 
 def main() :
