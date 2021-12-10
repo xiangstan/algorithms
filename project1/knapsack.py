@@ -6,6 +6,7 @@ import random
 import sys
 import time
 from matplotlib.gridspec import  GridSpec
+from greedy import Greedy
 
 if len(sys.argv) < 2 :
     print("\nUsage: python knapsack.py [number of total items]\n")
@@ -63,6 +64,7 @@ def exhaustive(n, values, weights) :
     return best
 
 # greedy search
+"""
 def greedy(n, values, weights) :
     best = BestSet()
     sort = np.argsort(values)[::-1] # get the index by sorting values from highest to lowest
@@ -91,10 +93,7 @@ def greedy(n, values, weights) :
     best.value = curvalue
     best.weight = curweight
     return best
-
-def deleteContent(fd):
-    os.ftruncate(fd, 0)
-    os.lseek(fd, 0, os.SEEK_SET)
+"""
 
 def main() :
     x = []
@@ -148,7 +147,7 @@ def main() :
             # greedy search
             # start timer
             gstart = time.time()
-            bestgr = greedy(n, values, weights)
+            bestgr = Greedy(n, values, weights)
             # stop timer
             gstop = time.time()
             grtimer = gstop - gstart
