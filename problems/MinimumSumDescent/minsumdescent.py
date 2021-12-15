@@ -12,7 +12,7 @@ def MinSumDescent(data) :
   # skipping the bottom row, loop through the rest of triangle
   for i in range(n - 1, -1, -1) :
     #print(f"Iteration: {i}")
-    for j in range( len(data[i])):
+    for j in range(len(data[i])):
       #print(f"data[i][j]: {data[i][j]}, memo[j]: {memo[j]}, meno[j+1]: {memo[j + 1]}")
       # find the minimum value between the current position and the one to the right, 
       # then add the minimum value with the value directly above.
